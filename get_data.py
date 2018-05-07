@@ -42,17 +42,21 @@ if __name__ == "__main__":
     
     i = 1
     go = True
+    check_4zero = False
     for j in range(5):
         print(j + 1)
         time.sleep(1)
 
     while go:
-        grab(str(i))
         keypressed, go = getkey()
-        print(keypressed)
-        writecsv([str(i)+".jpg",keypressed])
-                
-        print(i)
-        i += 1
+        if sum(keypressed) or check_4zero:
+            grab(str(i))
+            print(keypressed)
+            writecsv([str(i)+".jpg",keypressed])
+                    
+            i += 1
+            check_4zero = False
+        else:
+            check_4zero = True
         time.sleep(0.2)
 
