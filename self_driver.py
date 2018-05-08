@@ -54,19 +54,21 @@ with tf.variable_scope("rnn"):
 saver = tf.train.Saver()
 last5_img = deque(maxlen=5)
 
-
+model = input("Drive Model Name: ")
 for i in range(5):
     print(i+1)
     sleep(1)
 
 
 with tf.Session() as sess:
-    saver.restore(sess, "./model/model_img4.ckpt")
+    saver.restore(sess, "./model/"+model+".ckpt")
 
     while True:
         snapshot = np.array(ImageGrab.grab())
         _img = cv2.resize(snapshot, (400,200),interpolation=cv2.INTER_AREA)
         img = cv2.cvtColor(_img, cv2.COLOR_BGR2GRAY)
+        img = cv2.Canny(img, threshold1 = 250, threshold2=200)
+
         data = np.array( img, dtype='uint8' )
         last5_img.append(data)
 
