@@ -44,7 +44,7 @@ with tf.variable_scope("cnn"):
     
     logit = tf.layers.dense(inputs=flat, units=4)
     outputs = tf.sigmoid(tf.matmul(logit, w) + b)
-    predict = outputs > 0.25
+    predict = outputs - [0.5, 0.1, 0.5 , 0.15] > 0
     
 
 saver = tf.train.Saver()
