@@ -66,10 +66,6 @@ with tf.Session() as sess:
     while True:
 
         img = Image.open("./img/"+names[name_i])
-##        snapshot = np.array(ImageGrab.grab())
-##        _img = cv2.resize(snapshot, (400,200),interpolation=cv2.INTER_AREA)
-##        img = cv2.cvtColor(_img, cv2.COLOR_BGR2GRAY)
-##        img = cv2.Canny(img, threshold1 = 250, threshold2=200)
 
         data = np.array( img, dtype='uint8' ).reshape([1,200,400,1])
         data = (data-data_mean) / data_std
@@ -77,21 +73,6 @@ with tf.Session() as sess:
         result, pred = sess.run([outputs, predict], feed_dict={X:data})
         #x = sess.run(outputs, feed_dict={X:data})
         print(key_out[name_i], [int(a*100)/100 for a in result[0]], pred)
-##        ReleaseKey(A)
-##        ReleaseKey(D)
-##        ReleaseKey(SPACE)
-##        ReleaseKey(S)
-        #print(x, key_out[name_i], [int(a*100)/100 for a in sess.run(outputs, feed_dict={X:data})])
+
         name_i += 1
-##        if acts[1]:
-##            PressKey(S)
-##        if acts[0]:
-##            PressKey(A)
-##        if acts[2]:
-##            PressKey(D)
-##        if acts[3]:
-##            PressKey(SPACE)
-
-
-
         
