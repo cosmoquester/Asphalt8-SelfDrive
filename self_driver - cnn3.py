@@ -30,25 +30,21 @@ with tf.variable_scope("cnn"):
     # pool : 5, 50, 99, 16
     pool = tf.layers.max_pooling2d(inputs=conv, pool_size=[2, 4], padding='SAME', strides=1)
     # conv2 
-    conv2 = tf.layers.conv2d(inputs=X, filters=64, kernel_size=[4, 8], padding='SAME', activation=tf.nn.relu)
+    conv2 = tf.layers.conv2d(inputs=pool, filters=32, kernel_size=[4, 8], padding='SAME', activation=tf.nn.relu)
     # pool2 
-    pool2 = tf.layers.max_pooling2d(inputs=conv, pool_size=[4, 8], padding='SAME', strides=2)
+    pool2 = tf.layers.max_pooling2d(inputs=conv2, pool_size=[4, 8], padding='SAME', strides=2)
     # conv3
-    conv2 = tf.layers.conv2d(inputs=X, filters=128, kernel_size=[4, 8], padding='SAME', activation=tf.nn.relu)
+    conv3 = tf.layers.conv2d(inputs=pool2, filters=64, kernel_size=[4, 8], padding='SAME', activation=tf.nn.relu)
     # pool3 
-    pool3 = tf.layers.max_pooling2d(inputs=conv, pool_size=[4, 8], padding='SAME', strides=2)
+    pool3 = tf.layers.max_pooling2d(inputs=conv3, pool_size=[4, 8], padding='SAME', strides=2)  
     
-    flat = tf.reshape(pool3, [-1, 100*200*16])
+    flat = tf.reshape(pool3, [-1, 50*100*64])
     w = tf.get_variable("w", [hidden_size, hidden_size])
     b = tf.get_variable("b", [hidden_size])
     
     logit = tf.layers.dense(inputs=flat, units=4)
     outputs = tf.sigmoid(tf.matmul(logit, w) + b)
-<<<<<<< HEAD
-    predict = outputs - [0.5, 0.4, 0.5 , 0.10] > 0
-=======
-    predict = outputs - [0.2, 0.05,0.25 , 0.1] > 0
->>>>>>> 0a8d469495bd36faf097215880ac675c0180672e
+    
     
 
 saver = tf.train.Saver()
@@ -69,14 +65,36 @@ with tf.Session() as sess:
 
     while True:
 
-        img = Image.open("./img/"+names[name_i])
+        snapshot = np.array(ImageGrab.grab())
+        _img = cv2.resize(snapshot, (400,200),interpolation=cv2.INTER_AREA)
+        img = cv2.cvtColor(_img, cv2.COLOR_BGR2GRAY)
 
         data = np.array( img, dtype='uint8' ).reshape([1,200,400,1])
         data = (data-data_mean) / data_std
-
-        result, pred = sess.run([outputs, predict], feed_dict={X:data})
+        result = sess.run(outputs, feed_dict={X:data})[0]
+        pred = result - [0.7, 0.5, 0.55, 0.10]
+        if pred[0]>pred[2]:
+            pred[2]=0
+        elif pred[2] > pred[0]:
+            pred[0]=0
+        pred = pred > 0
+        
         #x = sess.run(outputs, feed_dict={X:data})
-        print(key_out[name_i], [int(a*100)/100 for a in result[0]], pred)
+        print(key_out[name_i], [int(a*100)/100 for a in result], pred)
+        ReleaseKey(A)
+        ReleaseKey(D)
+        ReleaseKey(SPACE)
+        ReleaseKey(S)
+        #print(x, key_out[name_i], [int(a*100)/100 for a in sess.run(outputs, feed_dict={X:data})])
+        if pred[1]:
+            PressKey(S)
+        if pred[0]:
+            PressKey(A)
+        if pred[2]:
+            PressKey(D)
+        if pred[3]:
+            PressKey(SPACE)
 
-        name_i += 1
+
+
         

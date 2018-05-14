@@ -52,16 +52,27 @@ if __name__ == "__main__":
         keypressed, go = getkey()
 
         if not pause:
+<<<<<<< HEAD
+            if sum(keypressed):# or check_4zero:
+=======
             if sum(keypressed) or check_4zero:
+>>>>>>> 0a8d469495bd36faf097215880ac675c0180672e
                 grab(str(i))
                 print(keypressed)
                 writecsv([str(i)+".jpg",keypressed])
                         
                 i += 1
+<<<<<<< HEAD
+                #check_4zero = False
+           # else:
+            #    check_4zero = True
+        time.sleep(0.1)
+=======
                 check_4zero = False
             else:
                 check_4zero = True
         time.sleep(0.2)
+>>>>>>> 0a8d469495bd36faf097215880ac675c0180672e
         
         if not go:
             chk = input("End?")
