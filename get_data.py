@@ -2,16 +2,18 @@ from PIL import ImageGrab
 from getkeys import key_check
 import time
 import csv
-import os
+from os import mkdir
+
+data_name = ''
 
 def grab(name):
     snapshot = ImageGrab.grab()
-    save_path = "./img/"+name+".jpg"
+    save_path = "./imgs/"+name+".jpg"
     snapshot.save(save_path)
     
 
 def writecsv(o1):
-    with open('log.csv','a',newline='') as fp:
+    with open('./logs/'+data_name+'.csv','a',newline='') as fp:
         writer = csv.writer(fp,delimiter=',')
         writer.writerow(o1)
 
@@ -35,44 +37,43 @@ def getkey():
 
 
 if __name__ == "__main__":
+
+    data_name = input("Pleasu Input Data Name: ")
     try:
-        os.mkdir("img")
+        mkdir("imgs")
+    except:
+        pass
+    try:
+        mkdir("./imgs/"+data_name)
+    except:
+        pass
+    try:
+        mkdir("logs")
     except:
         pass
     
     i = 1
     pause = 0
     go = True
-    check_4zero = False
+    
+    # Count down for Start
     for j in range(5):
         print(j + 1)
         time.sleep(1)
-
+    # Get Data
     while True:
         keypressed, go = getkey()
 
         if not pause:
-<<<<<<< HEAD
-            if sum(keypressed):# or check_4zero:
-=======
-            if sum(keypressed) or check_4zero:
->>>>>>> 0a8d469495bd36faf097215880ac675c0180672e
-                grab(str(i))
-                print(keypressed)
-                writecsv([str(i)+".jpg",keypressed])
+
+            grab(data_name+"/"+str(i))
+            print(keypressed)
+            writecsv([str(i)+".jpg",keypressed])
                         
-                i += 1
-<<<<<<< HEAD
-                #check_4zero = False
-           # else:
-            #    check_4zero = True
+            i += 1
+
+
         time.sleep(0.1)
-=======
-                check_4zero = False
-            else:
-                check_4zero = True
-        time.sleep(0.2)
->>>>>>> 0a8d469495bd36faf097215880ac675c0180672e
         
         if not go:
             chk = input("End?")
