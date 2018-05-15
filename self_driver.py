@@ -11,8 +11,8 @@ import pandas as pd
 
 hidden_size = 4  # output from the LSTM. 5 to directly predict one-hot
 batch_size = 100   # one sentence
-data_mean = 17.119790415671556
-data_std = 63.36037302373175
+data_mean = 0
+data_std = 0
 
 A = 0x1E
 S = 0x1F
@@ -38,7 +38,7 @@ with tf.variable_scope("cnn"):
     # pool3 
     pool3 = tf.layers.max_pooling2d(inputs=conv3, pool_size=[4, 8], padding='SAME', strides=2)  
     
-    flat = tf.reshape(pool3, [-1, 50*100*64])
+    flat = tf.reshape(pool3, [-1, 100*200*16])
     w = tf.get_variable("w", [hidden_size, hidden_size])
     b = tf.get_variable("b", [hidden_size])
     
@@ -58,10 +58,9 @@ for i in range(5):
 with tf.Session() as sess:
     saver.restore(sess, "./model/"+model+".ckpt")
 
-    data_df = pd.read_csv('log.csv', names=['name','key_out'])
-    names = data_df['name'].values
-    name_i = 0
-    key_out = [eval(x) for x in data_df['key_out'].values]
+    with open('./logs/norm.txt', 'r') as f:
+        data_mean = float(f.readline())
+        data_std = float(f.readline())
 
     while True:
 
@@ -85,7 +84,7 @@ with tf.Session() as sess:
         ReleaseKey(D)
         ReleaseKey(SPACE)
         ReleaseKey(S)
-        #print(x, key_out[name_i], [int(a*100)/100 for a in sess.run(outputs, feed_dict={X:data})])
+
         if pred[1]:
             PressKey(S)
         if pred[0]:

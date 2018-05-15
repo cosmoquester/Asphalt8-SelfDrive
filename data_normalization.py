@@ -5,8 +5,7 @@ from os import listdir
 
 
 imgs=[]
-data_names = [x[:-4] for x in listdir('./logs')]
-
+data_names = [x[:-4] for x in listdir('./logs') if x[-4:]=='.csv']
 
 for data_name in data_names:
         
@@ -23,8 +22,15 @@ for data_name in data_names:
 
 
 imgs = np.reshape(imgs, [1,-1])
+mean = imgs.mean()
+std = imgs.std()
 
-print("Mean:", imgs.mean())
-print("Standard Deviation:", imgs.std())
+with open('./logs/norm.txt', 'w') as f:
+        f.write(str(mean))
+        f.write('\n')
+        f.write(str(std))
+
+print("Mean:", mean)
+print("Standard Deviation:", std)
 print("Press any key if you exit...")
 input()

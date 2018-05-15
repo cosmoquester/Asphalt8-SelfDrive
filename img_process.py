@@ -9,7 +9,7 @@ if data_name:
     data_names = [data_name]
 
 else:
-    data_names = [x[:-4] for x in listdir('./logs')]
+    data_names = [x[:-4] for x in listdir('./logs') if x[-4:]=='.csv']
 
 for data_name in data_names:
     data_df = pd.read_csv('./logs/'+data_name+'.csv', names=['name','output'])
