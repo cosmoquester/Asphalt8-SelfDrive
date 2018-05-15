@@ -67,11 +67,19 @@ with tf.Session() as sess:
         snapshot = np.array(ImageGrab.grab())
         _img = cv2.resize(snapshot, (400,200),interpolation=cv2.INTER_AREA)
         img = cv2.cvtColor(_img, cv2.COLOR_BGR2GRAY)
+        img = cv2.Canny(img, threshold1 = 500, threshold2=100)
 
         data = np.array( img, dtype='uint8' ).reshape([1,200,400,1])
         data = (data-data_mean) / data_std
+
+        ReleaseKey(A)
+        ReleaseKey(D)
+        ReleaseKey(SPACE)
+        ReleaseKey(S)
+
+        
         result = sess.run(outputs, feed_dict={X:data})[0]
-        pred = result - [0.7, 0.5, 0.55, 0.10]
+        pred = result - [0.6, 0.5, 0.6, 0.10]
         if pred[0]>pred[2]:
             pred[2]=0
         elif pred[2] > pred[0]:
@@ -79,11 +87,8 @@ with tf.Session() as sess:
         pred = pred > 0
         
         #x = sess.run(outputs, feed_dict={X:data})
-        print(key_out[name_i], [int(a*100)/100 for a in result], pred)
-        ReleaseKey(A)
-        ReleaseKey(D)
-        ReleaseKey(SPACE)
-        ReleaseKey(S)
+        print([int(a*100)/100 for a in result], pred)
+
 
         if pred[1]:
             PressKey(S)
