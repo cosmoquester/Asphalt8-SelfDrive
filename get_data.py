@@ -51,6 +51,10 @@ if __name__ == "__main__":
         mkdir("logs")
     except:
         pass
+
+    # Reset Preexistence
+    f = open('./logs/'+data_name+'.csv','w',newline='')
+    f.close()
     
     i = 1
     pause = 0
@@ -60,6 +64,8 @@ if __name__ == "__main__":
     for j in range(5):
         print(j + 1)
         time.sleep(1)
+
+        
     # Get Data
     while True:
         keypressed, go = getkey()
