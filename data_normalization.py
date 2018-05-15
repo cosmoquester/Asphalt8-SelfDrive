@@ -5,7 +5,14 @@ from os import listdir
 
 
 imgs=[]
-data_names = [x[:-4] for x in listdir('./logs') if x[-4:]=='.csv']
+
+data_name = input("Please Input Data Name: \n(Just Enter if you use all data)")
+
+if data_name:
+    data_names = [data_name]
+
+else:
+    data_names = [x[:-4] for x in listdir('./logs') if x[-4:]=='.csv']
 
 for data_name in data_names:
         

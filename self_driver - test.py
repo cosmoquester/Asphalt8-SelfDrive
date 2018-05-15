@@ -74,7 +74,7 @@ with tf.Session() as sess:
 
         result, pred = sess.run([outputs, predict], feed_dict={X:data})
         #x = sess.run(outputs, feed_dict={X:data})
-        print(key_out[name_i], [int(a*100)/100 for a in result[0]], pred)
+        print([int(a*100)/100 for a in result[0]], pred)
 
         name_i += 1
         
