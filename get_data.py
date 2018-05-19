@@ -38,7 +38,7 @@ def getkey():
 
 if __name__ == "__main__":
 
-    data_name = input("Pleasu Input Data Name: ")
+    data_name = input("Please Input Data Name: ")
     try:
         mkdir("imgs")
     except:
@@ -77,9 +77,6 @@ if __name__ == "__main__":
             writecsv([str(i)+".jpg",keypressed])
                         
             i += 1
-
-
-        time.sleep(0.1)
         
         if not go:
             chk = input("End?")
