@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Asphalt8-SelfDrive
-=======
 # Asphalt8-SelfDrive
 
 This is Asphalt8-SelfDrive machine learning program.
