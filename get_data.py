@@ -2,6 +2,7 @@ from PIL import ImageGrab
 from getkeys import key_check
 import time
 import csv
+import sys
 from os import mkdir
 
 data_name = ''
@@ -19,21 +20,8 @@ def writecsv(o1):
 
 def getkey():
     key = key_check()
-    
-    # A S D SPACE
-    output = [0,0,0,0]
 
-    # ZERO is for end
-    if 'A' in key:
-        output[0] = 1
-    if 'S' in key:
-        output[1] = 1
-    if 'D' in key:
-        output[2] = 1
-    if ' ' in key:
-        output[3] = 1
-
-    return output, '0' not in key
+    return key[1:-1], 1 - key[-1]
 
 
 if __name__ == "__main__":
@@ -59,29 +47,28 @@ if __name__ == "__main__":
     i = 1
     pause = 0
     go = True
-    
-    # Count down for Start
-    for j in range(5):
-        print(j + 1)
-        time.sleep(1)
 
-        
+    time.sleep(3)
+           
     # Get Data
+    keypressed = [0,0,0,0]
+    data = []
+    key_check()
     while True:
-        keypressed, go = getkey()
+        new_keypressed, go = getkey()
+        # change = [ keypressed[i] ^ new_keypressed[i] for i in range(4)]
+        keypressed = new_keypressed
 
         if not pause:
 
             grab(data_name+"/"+str(i))
             print(keypressed)
-            writecsv([str(i)+".jpg",keypressed])
+            data.append([str(i)+".jpg",keypressed])
                         
             i += 1
         
         if not go:
-            chk = input("End?")
-            if chk:
-                continue
-            else:
-                break
+            break
 
+    for datum in data:
+        writecsv(datum)
